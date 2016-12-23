@@ -152,6 +152,11 @@ block content
                         input(id='rating' type="checkbox" name="rating" ng-model="widget.rating")
                         label(for='rating') #[span] &nbsp; Ask for rating after the call ends
                           .badge(data-toggle='tooltip' data-placement="top" title="Ask the user/caller to rate after the call ends") ?
+                      .form-group(analytics-on analytics-event="Ringback Tone" analytics-label="Ringback Tone")
+                        input(id='ringback' type="checkbox" name="rating" ng-model="widget.ringback")
+                        label(for='ringback') #[span] &nbsp; Ringback tone
+                          .badge(data-toggle='tooltip' data-placement="top" title="Hear a ring while the call connects") ?
+
                   .panel-heading
                     a.collapsed.title-toggle(data-toggle="collapse" data-target="#collapseIncompatileBrowserConfiguration" href="#collapseIncompatileBrowserConfiguration") Incompatible Browser Configuration
                   .panel-collapse.collapse#collapseIncompatileBrowserConfiguration

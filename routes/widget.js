@@ -18,7 +18,7 @@ var PERMITTED_FIELDS = [
   'dial_pad', 'send_digits', 'hide_widget', 'updated_at',
   'link_button_to_a_page', 'show_text_html',
   'incompatible_browser_configuration', 'new_sip_uri',
-  'show_frame', 'test_setup', 'rating', 'server_auth_url'
+  'show_frame', 'test_setup', 'rating', 'server_auth_url', 'ringback'
 ];
 
 var portalHandler = function(req, res, next) {
