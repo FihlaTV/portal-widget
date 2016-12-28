@@ -355,7 +355,7 @@ var check1Ready = (function() {
   }
 
   function isWebRTCSupported() {
-    return voxbone.WebRTC.isWebRTCSupported() && !isChromeOnHttp();
+    return voxbone.WebRTC.isWebRTCSupported();
   }
 
   function makeCall() {
