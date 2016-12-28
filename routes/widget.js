@@ -87,12 +87,12 @@ router.post('/portal-widget/get-code', function(req, res, next) {
     });
   }
 });
-
+//This endpoint is used to host a page for Customers who do not use a HTTPS site.
 router.post('/portal-widget/get-html', function(req, res, next){
   var result = {};
   var widget = req.parameters
   try {
-    result.widget_code = utils.widgetSecureDivhtml(widget, widget.did);
+    result.widget_code = utils.widgetSecureDivHTML(widget, widget.did);
     res.render('widget/widget_html', result);
   } catch (e) {
     return res.status(500).json({

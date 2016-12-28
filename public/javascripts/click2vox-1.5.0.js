@@ -602,8 +602,7 @@ var check1Ready = (function() {
       makeCall();
     } else {
       var buttonData = document.querySelector('.voxButton');
-      // console.log(buttonData.dataset);
-      open('POST', infoVoxbone.server_url + '/portal-widget/get-html', buttonData.dataset);
+      openPopup('POST', infoVoxbone.server_url + '/portal-widget/get-html', buttonData.dataset);
     }
   });
   //
@@ -710,7 +709,7 @@ var check1Ready = (function() {
   init();
 });
 
-open = function(verb, url, data) {
+openPopup = function(verb, url, data) {
   var form = document.createElement("form");
   form.action = url;
   form.method = verb;
