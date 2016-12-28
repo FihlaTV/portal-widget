@@ -88,6 +88,19 @@ router.post('/portal-widget/get-code', function(req, res, next) {
   }
 });
 
+router.post('/portal-widget/get-html', function(req, res, next){
+  var result = {};
+  var widget = req.parameters
+  try {
+    result.widget_code = utils.widgetSecureDivhtml(widget, widget.did);
+    res.render('widget/widget_html', result);
+  } catch (e) {
+    return res.status(500).json({
+      msg: 'Something went wrong while generating code!', err: e
+    });
+  }
+});
+
 module.exports = {
   router: router,
   portalHandler: portalHandler
