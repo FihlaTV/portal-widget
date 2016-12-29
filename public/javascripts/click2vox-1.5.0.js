@@ -602,7 +602,13 @@ var check1Ready = (function() {
       makeCall();
     } else {
       var buttonData = document.querySelector('.voxButton');
-      openPopup('POST', infoVoxbone.server_url + '/portal-widget/get-html', buttonData.dataset);
+
+      // Avoid Voxbone Redirect which loses the proper POST params data (buttonData.dataset)
+      var url = infoVoxbone.server_url;
+      if (url === 'https://voxbone.com/click2vox')
+        url = 'https://www.voxbone.com/click2vox';
+
+      openPopup('POST', url + '/portal-widget/get-html', buttonData.dataset);
     }
   });
   //
