@@ -47,6 +47,7 @@ var portalHandler = function(req, res, next) {
     show_frame: true,
     show_branding: true,
     test_setup: true,
+    ringback: true,
     webrtc_username: params.login,
     webrtc_password: params.password,
     basic_auth: params.basic_auth
