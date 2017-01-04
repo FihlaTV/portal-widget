@@ -37,7 +37,7 @@ module.exports = {
   },
 
   widgetDivHtmlCode: function (widget, did) {
-    var jade = require('jade');
+    var pug = require('pug');
     var script = process.env.APP_URL + this.click2voxJsFileName;
     var label = widget.button_label || process.env.DEFAULT_BUTTON_LABEL;
 
@@ -49,11 +49,11 @@ module.exports = {
       the_widget: widget
     };
 
-    return jade.renderFile('./views/voxbone_widget_div.jade', params);
+    return pug.renderFile('./views/voxbone_widget_div.pug', params);
   },
 
   widgetSecureDivHTML: function (widget, did) {
-    var jade = require('jade');
+    var pug = require('pug');
     var script = process.env.APP_URL + this.click2voxJsFileName;
     var cleanLabel = widget.text.replace(/%20/g , ' '); // Sometimes label has spaces in it. When it does the spaces translate as %20 on the text. This line is to clean that.
     var params = {
@@ -64,6 +64,6 @@ module.exports = {
       the_widget: widget
     };
 
-    return jade.renderFile('./views/voxbone_secure_widget.jade', params);
+    return pug.renderFile('./views/voxbone_secure_widget.pug', params);
   }
 };

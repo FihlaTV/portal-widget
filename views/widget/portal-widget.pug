@@ -36,12 +36,12 @@ block content
     });
 
   .voxButton#voxButtonPreview(data-div_css_class_name="hidden"
-  data-voxbone_webrtc_username='#{widget.webrtc_username}'
-  data-voxbone_webrtc_password='#{widget.webrtc_password}'
-  data-basic_auth='#{widget.basic_auth == 1 ? "true" : "false" }'
+  data-voxbone_webrtc_username=`${widget.webrtc_username}`
+  data-voxbone_webrtc_password=`${widget.webrtc_password}`
+  data-basic_auth=`${widget.basic_auth == 1 ? "true" : "false" }`
   )
 
-  .main.createButton(ng-controller="EditWidgetController" ng-init="initData={widget: #{JSON.stringify(widget)}, did: #{widget.did}, widgetCode: '', username: '#{widget.webrtc_username}'}")
+  .main.createButton(ng-controller="EditWidgetController" ng-init=`initData={widget: ${JSON.stringify(widget)}, did: ${widget.did}, widgetCode: '', username: '${widget.webrtc_username}'}`)
     .header
       .container
         .row
@@ -69,7 +69,7 @@ block content
                 .boxPanel.options-group
                   .form-group(analytics-on analytics-event="Button Configuration" analytics-label="Button Label")
                     label Button Label
-                    input.form-control(type="text" name="button_label" ng-blur="generateWidgetCode()" ng-model="widget.button_label" value="#{defaultBtnLabel}" placeholder="i.e. #{defaultBtnLabel}")
+                    input.form-control(type="text" name="button_label" ng-blur="generateWidgetCode()" ng-model="widget.button_label" value=`${defaultBtnLabel}` placeholder=`i.e. ${defaultBtnLabel}`)
 
                   if params.basic_auth == '0'
                     .form-group(analytics-on analytics-event="Button Configuration" analytics-label="Server Auth Url")
@@ -182,4 +182,3 @@ block content
           .col-md-6.right-col
             .section
               include preview_widget
-Add Comment
