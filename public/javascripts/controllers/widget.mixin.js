@@ -16,6 +16,7 @@ define([
 
       var didToCall = (typeof did === 'undefined') ? $scope.did : did;
       voxButtonElement.dataset.did = didToCall;
+      voxButtonElement.dataset.ringback = $scope.widget.ringback;
 
       var launch_call_button = document.getElementById('launch_call');
       if (launch_call_button)
