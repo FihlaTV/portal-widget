@@ -13,6 +13,8 @@ module.exports = {
       .clearValue('textarea[name="show_text_html_value"]')
       .setValue('textarea[name="show_text_html_value"]', 'Incompatible_browser')
       .assert.containsText('div.alert.alert-success', '')
+      .click('a[id="clipboard_copy"]')
+      .assert.containsText('div.alert.alert-success', '')
       .end();
   },
   'Notification-Error' : function (browser) {

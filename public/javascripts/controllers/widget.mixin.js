@@ -51,12 +51,14 @@ define([
         console.info('Action:', e.action);
         console.info('Text:', e.text);
         console.info('Trigger:', e.trigger);
+        $scope.openNotice("success", "Code Copied Successfully!");
         e.clearSelection();
       });
 
       clipboard.on('error', function (e) {
         console.error('Action:', e.action);
         console.error('Trigger:', e.trigger);
+        $scope.openNotice("error", "Something went wrong while copying the code");
       });
     };
   };
