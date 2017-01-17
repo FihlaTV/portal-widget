@@ -13,30 +13,31 @@ module.exports = {
 
   defaultBtnLabel: process.env.DEFAULT_BUTTON_LABEL || 'Call Sales',
 
-  userGravatarUrl: function (res) {
+  userGravatarUrl: function(res) {
     var crypto = require('crypto');
     var md5_email = crypto.createHash('md5').update(res.locals.currentUser.email).digest("hex");
     return "https://www.gravatar.com/avatar/" + md5_email + "/?s=20&d=mm";
   },
 
-  objectNotFound: function (req, res, next) {
+  objectNotFound: function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
   },
 
-  uuid4: function () {
+  uuid4: function() {
     // I leave this approach commented out just for general culture :)
     // 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     //     var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
     //     return v.toString(16);
     // });
 
-    function b (a) {return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,b);}
+    function b(a) {
+      return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, b); }
     return b();
   },
 
-  widgetDivHtmlCode: function (widget, did) {
+  widgetDivHtmlCode: function(widget, did) {
     var pug = require('pug');
     var script = process.env.APP_URL + this.click2voxJsFileName;
     var label = widget.button_label || process.env.DEFAULT_BUTTON_LABEL;
@@ -52,16 +53,28 @@ module.exports = {
     return pug.renderFile('./views/voxbone_widget_div.pug', params);
   },
 
-  widgetSecureDivHTML: function (widget, did) {
+  sanitizeParams: function(obj) {
+
+    Object.keys(obj).forEach(function(key) {
+      if (obj[key] === 'true')
+        obj[key] = true;
+      else if (obj[key] === 'false')
+        obj[key] = false;
+    });
+
+    return obj;
+  },
+
+  widgetSecureDivHTML: function(widget, did) {
     var pug = require('pug');
     var script = process.env.APP_URL + this.click2voxJsFileName;
-    var cleanLabel = widget.text.replace(/%20/g , ' '); // Sometimes label has spaces in it. When it does the spaces translate as %20 on the text. This line is to clean that.
+    var cleanLabel = widget.text.replace(/%20/g, ' '); // Sometimes label has spaces in it. When it does the spaces translate as %20 on the text. This line is to clean that.
     var params = {
       did: did,
       script: script,
       id: widget._id,
       label: escape(cleanLabel),
-      the_widget: widget
+      the_widget: this.sanitizeParams(widget)
     };
 
     return pug.renderFile('./views/voxbone_secure_widget.pug', params);
