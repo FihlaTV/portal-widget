@@ -18,7 +18,8 @@ var PERMITTED_FIELDS = [
   'dial_pad', 'send_digits', 'hide_widget', 'updated_at',
   'link_button_to_a_page', 'show_text_html',
   'incompatible_browser_configuration', 'new_sip_uri',
-  'show_frame', 'test_setup', 'rating', 'server_auth_url', 'ringback'
+  'show_frame', 'test_setup', 'rating', 'server_auth_url', 'ringback',
+  'placement'
 ];
 
 var portalHandler = function(req, res, next) {
@@ -48,6 +49,7 @@ var portalHandler = function(req, res, next) {
     show_branding: true,
     test_setup: true,
     ringback: true,
+    placement: 'bottom-right',
     webrtc_username: params.login,
     webrtc_password: params.password,
     basic_auth: params.basic_auth

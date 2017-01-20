@@ -3,7 +3,9 @@
   border-color: #a1aeb7;
 }
 
+
 /*Form Error*/
+
 .error-label {
   display: block;
   padding: 0 4px;
@@ -20,19 +22,34 @@
   padding: 10px;
 }
 
-/*Checkbox*/
-.checkbox {
 
+/*Checkbox*/
+
+.checkbox {
   label {
     padding-left: 2px;
   }
-  
   label::before {
     background: #dbe1e5;
     border-color: #8a9399;
   }
-  
   input[type="checkbox"]:checked + label::after {
     color: @vx-purple;
+  }
+}
+
+.choose-position {
+  display: inline-block;
+  padding: 10px;
+  background: #d7dfe1;
+  border-radius: 6px;
+  p {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  label {
+    margin-right: 15px;
+    font-size: 13px;
   }
 }

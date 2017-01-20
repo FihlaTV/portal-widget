@@ -566,6 +566,11 @@ var check1Ready = (function() {
     hideElement(".vox-widget-wrapper #vw-rating-after-message");
     hideElement(".vox-widget-wrapper .vw-rating");
 
+    //Widget placement
+    var voxWidgetWrapper = document.querySelector('.vox-widget-wrapper');
+    voxWidgetWrapper.classList.remove("vw-top-left", "vw-top-right", "vw-bottom-right", "vw-bottom-left");
+    voxWidgetWrapper.classList.add('vw-' + infoVoxbone.placement);
+
     showAnimatedDots();
     showElement(".vox-widget-wrapper #vw-in-call");
     showElement(".vox-widget-wrapper #vw-body");

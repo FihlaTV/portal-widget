@@ -124,6 +124,25 @@ block content
                         label(for='show_branding') #[span] Show branding
                           .badge(data-toggle='tooltip' data-placement="top" title="Toggles Voxbone branding from button and popup") ?
 
+                      .form-group
+                        label(for='widget_position') #[span] Widget Position
+                          .badge(data-toggle='tooltip' data-placement="top" title="Choose where the widget will be displayed on your page") ?
+                        .choose-position
+                          .pull-left
+                            label
+                              input(type='radio' name="position" ng-model="widget.placement" value="top-left")
+                              span.radio-name Top Left
+                            label
+                              input(type='radio' name='position' ng-model="widget.placement" value="bottom-left")
+                              span.radio-name Bottom Left
+                          .pull-right
+                            label.pull-right
+                              span.radio-name Top Right
+                              input(type='radio' name='position' ng-model="widget.placement" value="top-right")
+                            label
+                              span.radio-name Bottom Right
+                              input(type='radio' name='position' ng-model="widget.placement" value="bottom-right")
+
                       .form-group(analytics-on analytics-event="Extra Configuration" analytics-label="Custom CSS")
                         a(href='https://developers.voxbone.com/how-to/style-click2vox-widget/' target='_blank') Click here for information about Custom CSS
 
