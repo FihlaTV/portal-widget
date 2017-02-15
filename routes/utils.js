@@ -68,11 +68,12 @@ module.exports = {
   widgetSecureDivHTML: function(widget, did) {
     var pug = require('pug');
     var script = process.env.APP_URL + this.click2voxJsFileName;
+
     var params = {
       did: did,
       script: script,
       id: widget._id,
-      label: unescape(cleanLabel),
+      label: unescape(widget.text),
       the_widget: this.sanitizeParams(widget)
     };
 

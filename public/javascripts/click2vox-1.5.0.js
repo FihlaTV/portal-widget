@@ -759,7 +759,7 @@ openPopup = function() {
   if (url === 'https://voxbone.com/click2vox')
     url = 'https://www.voxbone.com/click2vox';
 
-  window.open(url + '/widget/portal-widget/get-html?' + params, '_blank', 'width='+w+',height='+h+',resizable=no,toolbar=no,menubar=no,location=no,status=no,top='+top+', left='+left);
+  window.open(url + '/portal-widget/get-html?' + params, '_blank', 'width='+w+',height='+h+',resizable=no,toolbar=no,menubar=no,location=no,status=no,top='+top+', left='+left);
 
   return false;
 };
