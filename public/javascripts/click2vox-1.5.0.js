@@ -390,14 +390,22 @@ var check1Ready = (function() {
         voxbone.WebRTC.context = infoVoxbone.context;
 
       if (infoVoxbone.send_digits) {
-        console.log('Digits to be send: ' + infoVoxbone.send_digits);
-        voxbone.WebRTC.configuration.dialer_string = infoVoxbone.send_digits;
+        var sanitizedDigits = infoVoxbone.send_digits.toString().replace(/ /g, '');
+
+        console.log('Digits to be send: ' + sanitizedDigits);
+        voxbone.WebRTC.configuration.dialer_string = sanitizedDigits;
       }
 
       voxbone.WebRTC.call(infoVoxbone.did);
       window.onbeforeunload = function (e) {
         voxbone.WebRTC.unloadHandler();
       };
+
+      if (isPopUp()) {
+        hideElement('.voxButton .vxb-widget-box');
+        hideElement('.vox-widget-wrapper .vw-main .vw-header .vw-actions');
+        window.resizeTo(400, 420);
+      }
     }
   }
 
@@ -614,6 +622,10 @@ var check1Ready = (function() {
     });
   }
 
+  function isPopUp() {
+    return infoVoxbone.is_popup === 'true';
+  }
+
   // Start of Button Events
   //
   // Click on Make Call button event
@@ -621,15 +633,9 @@ var check1Ready = (function() {
     e.preventDefault();
     if(!isChromeOnHttp()){
       makeCall();
-    } else {
-      var buttonData = document.querySelector('.voxButton');
-
-      // Avoid Voxbone Redirect which loses the proper POST params data (buttonData.dataset)
-      var url = infoVoxbone.server_url;
-      if (url === 'https://voxbone.com/click2vox')
-        url = 'https://www.voxbone.com/click2vox';
-
-      openPopup('POST', url + '/portal-widget/get-html', buttonData.dataset);
+    } else if (!isPopUp()){
+      openPopup();
+      return false;
     }
   });
   //
@@ -739,22 +745,23 @@ var check1Ready = (function() {
   init();
 });
 
-openPopup = function(verb, url, data) {
-  var form = document.createElement("form");
-  form.action = url;
-  form.method = verb;
-  form.target = "_blank";
-  if (data) {
-    for (var key in data) {
-      var input = document.createElement("textarea");
-      input.name = key;
-      input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
-      form.appendChild(input);
-    }
-  }
-  form.style.display = 'none';
-  document.body.appendChild(form);
-  form.submit();
+openPopup = function() {
+  var w = 280;
+  var h = 220;
+  var left = (screen.width/2)-(w/2);
+  var top = (screen.height/2)-(h/2);
+
+  var buttonData = document.querySelector('.voxButton').dataset;
+  var params = Object.keys(buttonData).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(buttonData[k])}`).join('&');
+
+  // Avoid Voxbone Redirect which loses the proper POST params data (buttonData.dataset)
+  var url = infoVoxbone.server_url;
+  if (url === 'https://voxbone.com/click2vox')
+    url = 'https://www.voxbone.com/click2vox';
+
+  window.open(url + '/widget/portal-widget/get-html?' + params, '_blank', 'width='+w+',height='+h+',resizable=no,toolbar=no,menubar=no,location=no,status=no,top='+top+', left='+left);
+
+  return false;
 };
 
 check0Ready();
