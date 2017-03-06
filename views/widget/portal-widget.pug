@@ -56,11 +56,11 @@ block content
                 p #[b Note:] web service needs to be installed to keep your password secret.  Install #[a(href="https://github.com/voxbone/webrtc-auth-servlet") webrtc-auth-servlet] or #[a(href="https://github.com/voxbone/webrtc-auth-perl") webrtc-auth-perl].
                   |&nbsp;&nbsp;Alternatively enable basic authentication on this did in the customer portal and then return to this page to have a widget with your api key directly embedded into the generated html.
 
-            #alert-success.alert.alert-warning.ng-cloak(ng-show="!isWebRTCSupported()") #[i.glyphicon.glyphicon-exclamation-sign] You are using a browser that does not support WebRTC. You can configure and preview your buttons, but you will not be able to place test calls. Please use Chrome or Firefox for maximum functionality.
+            #alert-success.alert.alert-warning.ng-cloak(ng-show="!isWebRTCSupported") #[i.glyphicon.glyphicon-exclamation-sign] You are using a browser that does not support WebRTC. You can configure and preview your buttons, but you will not be able to place test calls. Please use Chrome or Firefox for maximum functionality.
             #alert-success.alert.alert-success(style="display: none;")
 
     .container
-      .body(ng-class="{newButton: !isWebRTCSupported()}")
+      .body(ng-class="{newButton: !isWebRTCSupported}")
         .row
           .col-md-6.left-col
             form#widget_form(name="widget_form" novalidate)
