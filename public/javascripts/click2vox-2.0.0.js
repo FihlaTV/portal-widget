@@ -182,7 +182,7 @@ var check1Ready = (function() {
     try {
       customText = JSON.parse(infoVoxbone.widget_texts).custom;
     } catch (e) {
-      onsole.log(e);
+      console.log(e);
     }
   }
 
