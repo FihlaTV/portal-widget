@@ -12,10 +12,10 @@
     <title>Call Fikri Firat</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="one-page-call.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
@@ -28,7 +28,7 @@
     <![endif]-->
     <script type="text/javascript">
 
-        function getJsonFromUrl() {
+        function getJsonFromUrl() { //This methods gets the complete URL and harvests all the parameters in it
           var query = location.search.substr(1);
           var result = {};
           query.split("&").forEach(function(part) {
@@ -39,35 +39,53 @@
         }
 
         var params;
-        
+        var dataText = "Thanks for your interest in ";
 
-        window.onload = function(){
-            params = getJsonFromUrl();
-            var button = document.getElementById("callButton");
-            var callerid = "campaign";
-            if(params.campaign)
+        window.onload = function(){ //.onload means this part of the script will only work after the page is fully loaded, i.e. our click to call button is loaded properly.
+            
+            params = getJsonFromUrl(); //execute the script to get parameters from URL. `params` variable will contain new properties for each parameter.
+
+            var button = document.getElementById("callButton"); //get the click-to-call button element to modify its parameters
+            var callerid = "campaign"; //the callerid string we will build to present to our SIP PBX / contact center
+
+            //check for each designated parameter to see if they exist and then populate/modify the string accordingly.
+            //All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
+            if(params.campaign) 
             {
                 callerid = params.campaign;
-            }
-            if(params.company)
-            {
-                callerid += "_" + params.company;
+                dataText += "<strong>" + params.campaign + "</strong>";
             }
             if(params.name)
             {
                 callerid += "_" + params.name;
+                dataText += ", <strong>" + params.name + "!</strong>";
             }
-            button.setAttribute('data-caller_id',callerid);
+            if(params.company)
+            {
+                callerid += "_" + params.company;
+                dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
+            }
+            
+            button.setAttribute('data-caller_id',callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
+
+            if(dataText != "Thanks for your interest in ")
+            {
+                document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
+            }
             
         };
         
         document.addEventListener("click2vox-ready",function(){
+            //this event is triggered when the button is fully loaded with all necessary scripts
+
             document.getElementById("launch_call").addEventListener("click",function(event){
+                //you can use this section to do any further integrations, i.e. integrations with your CRMs, receive notifications when someone called, track behaviour, etc.
+                //This particular implementation of mine triggers my Zapier integration and sends me a Slack chat message with all data collected from the link.
                 console.log("triggering zapier...");
                 var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
                 xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mrvzui/");
-                //xmlhttp.setRequestHeader("Content-Type", "application/json");
-                xmlhttp.send(JSON.stringify(params));
+               
+                xmlhttp.send(JSON.stringify(params)); //converts all parameters collected back to string and sends it to Zapier API
             });
         });
 
@@ -76,23 +94,32 @@
 </head>
 
 <body>
-
-    <!-- Navigation -->
-
-    <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <a><img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0b5/0ed/2d9cc29.jpg" style="background-repeat: no-repeat;
-    background-position: 50%;
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;"/></a>
-            <h1>Fikri Fırat</h1>
-            <h3>Developer Advocate at Voxbone Workshop</h3>
+        <!-- You can present the data collected from the URL here. This is just an example -->
+            <div class="company-logo">
+                <!-- Put your own logo URL here!! -->
+                 <a class=""><img src="https://www.voxbone.com/files/voxbone-logo.png" style="background-repeat: no-repeat;
+    height: 100px;"/></a>
+            </div>
+            <div class="data-text">
+                <!-- The following is empty -->
+                <h2 class="data-content" id="data-content"></h2>
+            </div>
+            <div class="helper-text">
+                <!-- Hint : You can get this information also from the URL. Ex : The account manager of the customer -->
+                <a class="helper-image"><img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0b5/0ed/2d9cc29.jpg" /></a>
+                <h1 style="font-size:36px;">Fikri Fırat</h1>
+                <h4>Developer Advocate at Voxbone Workshop</h3>
+            </div>
+            
+            
             <br>
             <a>
+            <!-- You must update this part with the code generated from click2vox.com or voxbone.com/portal. This is purely copied and pasted code from there. -->
             <div class="voxButton text-vertical-center" id="callButton" data-button_id="58a72916a08a081100f361cc" data-text="Call%20Fikri%20Now%20%26%23128222%3B%20%26%23128527%3B%20%26%23127757%3B%20%26%23127758%3B" data-did="883510080686" data-caller_id="test" data-incompatible_browser_configuration="show_text_html" data-server_url="https://click2vox.com" data-use_default_button_css="true" data-div_css_class_name="style-b" data-placement="bottom-right" data-text_html="Call +32493400606"></div><script async src="https://click2vox.com/click2vox.js"></script></a>
             <br>
+            <!-- You can link the product/service or your homepage to this button. -->
             <a href="https://workshop.voxbone.com" class="btn btn-dark btn-lg">Find Out More</a>
         </div>
     </header>
