@@ -68,6 +68,12 @@ var loadAssets = (function() {
 
 var loadVoxboneWidget = (function() {
 
+  // Don't load anything if we're not going to show anything
+  if (!isWebRTCSupported() && (!infoVoxbone.incompatible_browser_configuration || infoVoxbone.incompatible_browser_configuration === 'hide_widget')) {
+    console.log('Not showing the Voxbone Button/Widget');
+    return;
+  }
+
   var voxBranding = '\
     <div id="vw-footer" class="vw-footer"> \
       <a class="vw-footer-text" href="https://voxbone.com" target="_blank">powered by:</a> \
@@ -253,15 +259,14 @@ var loadVoxboneWidget = (function() {
 
   if (!isWebRTCSupported() && infoVoxbone.incompatible_browser_configuration === 'show_text_html') {
     voxButtonElement.innerHTML += ' \
-    <div style="display: none;' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
+    <div style="' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
       <span>' + unescape(infoVoxbone.text_html) + '</span>\
     </div>\
   ';
-  } else if (!isWebRTCSupported() && infoVoxbone.incompatible_browser_configuration === 'hide_widget')
-    hideElement('div[id="launch_call_div"]');
-  else {
+  } else {
+    custom_frame_color += (isWebRTCSupported() ? 'display: none; ' : '');
     voxButtonElement.innerHTML += ' \
-    <div style="display: none;' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
+    <div style="' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
       <button id="launch_call" ' + custom_button_color + ' class="vxb-btn-style ' + (infoVoxbone.button_css_class_name) + '"><span>' + unescape(customText.button || infoVoxbone.text) + '</span></button>\
       ' + links + '\
     </div>\
@@ -305,7 +310,7 @@ var loadVoxboneWidget = (function() {
       sendPostMessage('setMicVolume', e.localVolume);
     },
 
-    'remoteMediaVolume': function (e) {
+    'remoteMediaVolume': function(e) {
       // sendPostMessage('setRemoteVolume', e.remoteVolume);
     },
 
