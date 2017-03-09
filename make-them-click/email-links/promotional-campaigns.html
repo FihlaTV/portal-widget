@@ -2,132 +2,179 @@
 <html lang="en">
 
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Call Fikri Firat</title>
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link href="one-page-call.css" rel="stylesheet">
+  <!-- Custom Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <script type="text/javascript">
+  function getJsonFromUrl() { //This methods gets the complete URL and harvests all the parameters in it
+    var query = location.search.substr(1);
+    var result = {};
+    query.split("&").forEach(function(part) {
+      var item = part.split("=");
+      result[item[0]] = decodeURIComponent(item[1]);
+    });
 
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
+    return result;
+  }
 
-	<title>Call Fikri Firat</title>
+  var params;
+  var dataText = "Thanks for your interest in ";
 
-	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  window.onload = function() { //.onload means this part of the script will only work after the page is fully loaded, i.e. our click to call button is loaded properly.
 
-	<!-- Custom CSS -->
-	<link href="one-page-call.css" rel="stylesheet">
+    params = getJsonFromUrl(); //execute the script to get parameters from URL. `params` variable will contain new properties for each parameter.
 
-	<!-- Custom Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    var button = document.getElementById("callButton"); //get the click-to-call button element to modify its parameters
+    var callerid = "campaign"; //the callerid string we will build to present to our SIP PBX / contact center
 
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-<script type="text/javascript">
+    //check for each designated parameter to see if they exist and then populate/modify the string accordingly.
+    //All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
+    if (params.campaign) {
+      callerid = params.campaign;
+      dataText += "<strong>" + params.campaign + "</strong>";
+    }
 
-function getJsonFromUrl() { //This methods gets the complete URL and harvests all the parameters in it
-	var query = location.search.substr(1);
-	var result = {};
-	query.split("&").forEach(function(part) {
-		var item = part.split("=");
-		result[item[0]] = decodeURIComponent(item[1]);
-	});
-	return result;
-}
+    if (params.name) {
+      callerid += "_" + params.name;
+      dataText += ", <strong>" + params.name + "!</strong>";
+    }
 
-var params;
-var dataText = "Thanks for your interest in ";
+    if (params.company) {
+      callerid += "_" + params.company;
+      dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
+    }
 
-window.onload = function(){ //.onload means this part of the script will only work after the page is fully loaded, i.e. our click to call button is loaded properly.
+    button.setAttribute('data-caller_id', callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
 
-params = getJsonFromUrl(); //execute the script to get parameters from URL. `params` variable will contain new properties for each parameter.
+    if (dataText != "Thanks for your interest in ") {
+      document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
+    }
+  };
 
-var button = document.getElementById("callButton"); //get the click-to-call button element to modify its parameters
-var callerid = "campaign"; //the callerid string we will build to present to our SIP PBX / contact center
+  document.addEventListener("click2vox-ready", function() {
+    //this event is triggered when the button is fully loaded with all necessary scripts
 
-//check for each designated parameter to see if they exist and then populate/modify the string accordingly.
-//All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
-if(params.campaign) 
-{
-	callerid = params.campaign;
-	dataText += "<strong>" + params.campaign + "</strong>";
-}
-if(params.name)
-{
-	callerid += "_" + params.name;
-	dataText += ", <strong>" + params.name + "!</strong>";
-}
-if(params.company)
-{
-	callerid += "_" + params.company;
-	dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
-}
+    document.getElementById("launch_call").addEventListener("click", function(event) {
+      //you can use this section to do any further integrations, i.e. integrations with your CRMs, receive notifications when someone called, track behaviour, etc.
+      //This particular implementation of mine triggers my Zapier integration and sends me a Slack chat message with all data collected from the link.
+      console.log("triggering zapier...");
+      var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance
+      xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mrvzui/");
 
-button.setAttribute('data-caller_id',callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
-
-if(dataText != "Thanks for your interest in ")
-{
-document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
-}
-
-};
-
-document.addEventListener("click2vox-ready",function(){
-//this event is triggered when the button is fully loaded with all necessary scripts
-
-document.getElementById("launch_call").addEventListener("click",function(event){
-//you can use this section to do any further integrations, i.e. integrations with your CRMs, receive notifications when someone called, track behaviour, etc.
-//This particular implementation of mine triggers my Zapier integration and sends me a Slack chat message with all data collected from the link.
-console.log("triggering zapier...");
-var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mrvzui/");
-
-xmlhttp.send(JSON.stringify(params)); //converts all parameters collected back to string and sends it to Zapier API
-});
-});
-
-
-</script>
+      xmlhttp.send(JSON.stringify(params)); //converts all parameters collected back to string and sends it to Zapier API
+    });
+  });
+  </script>
 </head>
 
 <body>
-	<header id="top" class="header">
-		<div class="text-vertical-center">
-			<!-- You can present the data collected from the URL here. This is just an example -->
-			<div class="company-logo">
-				<!-- Put your own logo URL here!! -->
-				<a class=""><img src="https://www.voxbone.com/files/voxbone-logo.png" style="background-repeat: no-repeat;
-					height: 100px;"/></a>
-				</div>
-				<div class="data-text">
-					<!-- The following is empty -->
-					<h2 class="data-content" id="data-content"></h2>
-				</div>
-				<div class="helper-text">
-					<!-- Hint : You can get this information also from the URL. Ex : The account manager of the customer -->
-					<a class="helper-image"><img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0b5/0ed/2d9cc29.jpg" /></a>
-					<h1 style="font-size:36px;">Fikri Fırat</h1>
-					<h4>Developer Advocate at Voxbone Workshop</h3>
-					</div>
+  <header id="top" class="header">
+    <div class="text-vertical-center">
+      <!-- You can present the data collected from the URL here. This is just an example -->
+      <div class="company-logo">
+        <!-- Put your own logo URL here!! -->
+        <a class=""><img src="https://www.voxbone.com/files/voxbone-logo.png" style="background-repeat: no-repeat;
+          height: 100px;" /></a>
+      </div>
+      <div class="data-text">
+        <!-- The following is empty -->
+        <h2 class="data-content" id="data-content"></h2>
+      </div>
+      <div class="helper-text">
+        <!-- Hint : You can get this information also from the URL. Ex : The account manager of the customer -->
+        <a class="helper-image"><img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0b5/0ed/2d9cc29.jpg" /></a>
+        <h1 style="font-size:36px;">Fikri Fırat</h1>
+        <h4>Developer Advocate at Voxbone Workshop</h4>
+      </div>
+      <br>
+      <a>
+        <!-- You must update this part with the code generated from click2vox.com or voxbone.com/portal. This is purely copied and pasted code from there. -->
+        <div class="voxButton text-vertical-center" id="callButton" data-button_id="58a72916a08a081100f361cc" data-text="Call%20Fikri%20Now%20%26%23128222%3B%20%26%23128527%3B%20%26%23127757%3B%20%26%23127758%3B" data-did="883510080686" data-caller_id="test" data-incompatible_browser_configuration="show_text_html" data-server_url="https://click2vox.com" data-use_default_button_css="true" data-div_css_class_name="style-b" data-placement="bottom-right" data-text_html="Call +32493400606"></div>
+        <script async src="https://click2vox.com/click2vox.js"></script>
+      </a>
+      <br>
+      <!-- You can link the product/service or your homepage to this button. -->
+      <a href="https://workshop.voxbone.com" class="btn btn-dark btn-lg">Find Out More</a>
+    </div>
+  </header>
+  <!-- Remove this part -->
+  <style>
+  #forkongithub a {
+    background: #781E75;
+    color: #fff;
+    text-decoration: none;
+    font-family: arial, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 1em;
+    line-height: 2rem;
+    position: relative;
+    transition: 0.5s;
+  }
 
+  #forkongithub a:hover {
+    background: #c11;
+    color: #fff;
+  }
 
-					<br>
-					<a>
-						<!-- You must update this part with the code generated from click2vox.com or voxbone.com/portal. This is purely copied and pasted code from there. -->
-						<div class="voxButton text-vertical-center" id="callButton" data-button_id="58a72916a08a081100f361cc" data-text="Call%20Fikri%20Now%20%26%23128222%3B%20%26%23128527%3B%20%26%23127757%3B%20%26%23127758%3B" data-did="883510080686" data-caller_id="test" data-incompatible_browser_configuration="show_text_html" data-server_url="https://click2vox.com" data-use_default_button_css="true" data-div_css_class_name="style-b" data-placement="bottom-right" data-text_html="Call +32493400606"></div><script async src="https://click2vox.com/click2vox.js"></script></a>
-						<br>
-						<!-- You can link the product/service or your homepage to this button. -->
-						<a href="https://workshop.voxbone.com" class="btn btn-dark btn-lg">Find Out More</a>
-					</div>
-				</header>
+  #forkongithub a::before,
+  #forkongithub a::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #fff;
+  }
 
-				<!-- Remove this part -->
-				<style>#forkongithub a{background:#781E75;color:#fff;text-decoration:none;font-family:arial,sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1em;line-height:2rem;position:relative;transition:0.5s;}#forkongithub a:hover{background:#c11;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:800px){#forkongithub{position:fixed;display:block;top:0;right:0;width:200px;overflow:hidden;height:200px;z-index:9999;}#forkongithub a{width:200px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}}</style><span id="forkongithub"><a href="https://github.com/voxbone-workshop/portal-widget">Fork me on GitHub</a></span>
+  #forkongithub a::after {
+    bottom: 1px;
+    top: auto;
+  }
 
+  @media screen and (min-width:800px) {
+    #forkongithub {
+      position: fixed;
+      display: block;
+      top: 0;
+      right: 0;
+      width: 200px;
+      overflow: hidden;
+      height: 200px;
+      z-index: 9999;
+    }
+    #forkongithub a {
+      width: 200px;
+      position: absolute;
+      top: 60px;
+      right: -60px;
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+    }
+  }
+  </style><span id="forkongithub"><a href="https://github.com/voxbone-workshop/portal-widget">Fork me on GitHub</a></span>
+</body>
 
-			</body>
-
-			</html>
+</html>
