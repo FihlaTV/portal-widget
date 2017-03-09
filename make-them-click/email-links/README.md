@@ -6,7 +6,7 @@ Deploy a single page within your domain and place dynamic links in your e-mails 
 
 Gets relevant data from the URL scheme
 
-Modifies the `data-caler_id` or `data-context` fields to pass the data to your contact center.
+Modifies the `data-caller_id` or `data-context` fields to pass the data to your contact center.
 
 # Use Cases
 If your website/application has one of the following, it's highly likely that you already have some e-mailings in your business processes to call your users for action :
