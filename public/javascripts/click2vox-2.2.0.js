@@ -24,7 +24,11 @@ requirejs.config({
 requirejs(['draggabilly', 'voxbone'],
   function(Draggabilly) {
     loadAssets();
-    new Draggabilly('.vox-widget-wrapper .vw-main', {});
+
+    //Just let the whole widget drag when tapping on Title Bar
+    new Draggabilly('.vox-widget-wrapper .vw-main', {
+      handle: '.vw-title-bar'
+    });
   }
 );
 
@@ -68,6 +72,12 @@ var loadAssets = (function() {
 
 var loadVoxboneWidget = (function() {
 
+  // Don't load anything if we're not going to show anything
+  if (!isWebRTCSupported() && (!infoVoxbone.incompatible_browser_configuration || infoVoxbone.incompatible_browser_configuration === 'hide_widget')) {
+    console.log('Not showing the Voxbone Button/Widget');
+    return;
+  }
+
   var voxBranding = '\
     <div id="vw-footer" class="vw-footer"> \
       <a class="vw-footer-text" href="https://voxbone.com" target="_blank">powered by:</a> \
@@ -81,10 +91,12 @@ var loadVoxboneWidget = (function() {
     <div style="display: none;" class="vox-widget-wrapper hidden"> \
       <div class="vw-main"> \
         <div class="vw-header"> \
-          <span class="vw-title" id="vw-title">Starting Call</span> \
-          <span class="vw-animated-dots">.</span> \
-          <span class="vw-animated-dots">.</span> \
-          <span class="vw-animated-dots">.</span> \
+          <div class="vw-title-bar"> \
+            <span class="vw-title" id="vw-title">Starting Call</span> \
+            <span class="vw-animated-dots">.</span> \
+            <span class="vw-animated-dots">.</span> \
+            <span class="vw-animated-dots">.</span> \
+          </div> \
           <div class="vw-actions"> \
             <a href="#" class="vxb-widget-mic"> \
               <i class="vw-icon vx-icon-mic-dark"></i> \
@@ -253,15 +265,14 @@ var loadVoxboneWidget = (function() {
 
   if (!isWebRTCSupported() && infoVoxbone.incompatible_browser_configuration === 'show_text_html') {
     voxButtonElement.innerHTML += ' \
-    <div style="display: none;' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
+    <div style="' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
       <span>' + unescape(infoVoxbone.text_html) + '</span>\
     </div>\
   ';
-  } else if (!isWebRTCSupported() && infoVoxbone.incompatible_browser_configuration === 'hide_widget')
-    hideElement('div[id="launch_call_div"]');
-  else {
+  } else {
+    custom_frame_color += (isWebRTCSupported() ? '; display: none; ' : '');
     voxButtonElement.innerHTML += ' \
-    <div style="display: none;' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
+    <div style="' + custom_frame_color + '" id="launch_call_div" class="vxb-widget-box ' + (infoVoxbone.div_css_class_name || "style-b") + '">\
       <button id="launch_call" ' + custom_button_color + ' class="vxb-btn-style ' + (infoVoxbone.button_css_class_name) + '"><span>' + unescape(customText.button || infoVoxbone.text) + '</span></button>\
       ' + links + '\
     </div>\
@@ -305,7 +316,7 @@ var loadVoxboneWidget = (function() {
       sendPostMessage('setMicVolume', e.localVolume);
     },
 
-    'remoteMediaVolume': function (e) {
+    'remoteMediaVolume': function(e) {
       // sendPostMessage('setRemoteVolume', e.remoteVolume);
     },
 
@@ -408,9 +419,19 @@ var loadVoxboneWidget = (function() {
   }
 
   function isChromeOnHttp() {
-    var isChrome = !!window.chrome && !!window.chrome.webstore;
-    var isHttp = window.location.protocol === "http:";
-    return isChrome && isHttp;
+
+    if (window.location.protocol !== "http:")
+      return false;
+
+    // Get if browser is Chrome/Chromium flavour
+    // Based on http://stackoverflow.com/a/13348618/197376
+    var isChromium = window.chrome,
+      winNav = window.navigator,
+      vendorName = winNav.vendor.toLowerCase(),
+      isOpera = winNav.userAgent.indexOf("OPR") > -1,
+      isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+
+    return (!!isChromium && vendorName === "google inc." && !isOpera && !isIEedge);
   }
 
   function isWebRTCSupported() {

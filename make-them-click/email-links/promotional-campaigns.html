@@ -44,20 +44,24 @@
 
     //check for each designated parameter to see if they exist and then populate/modify the string accordingly.
     //All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
+
     if (params.campaign && params.campaign.toLowerCase() != "null") {
       callerid = params.campaign;
       dataText += "<strong>" + params.campaign + "</strong>";
     }
-
+    
     if (params.name && params.name.toLowerCase() != "null") {
+
       callerid += "_" + params.name;
       dataText += ", <strong>" + params.name + "!</strong>";
     }
 
     if (params.company && params.company.toLowerCase() != "null") {
+
       callerid += "_" + params.company;
       dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
     }
+
 
     try{
      button.setAttribute('data-caller_id',callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
@@ -65,6 +69,9 @@
     catch(err){
       alert("Thanks for testing! Couldn't dynamically modify the callerId. Please specify the 'id' attribute of your call button and make sure it matches the string on line #48  -Fikri from Voxbone");
     }
+
+    button.setAttribute('data-caller_id', callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
+
 
     if (dataText != "Thanks for your interest in ") {
       document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
@@ -75,13 +82,14 @@
     //this event is triggered when the button is fully loaded with all necessary scripts
 
     document.getElementById("launch_call").addEventListener("click", function(event) {
+
       //This particular implementation of mine triggers my Zapier integration and sends me a Slack chat message with all data collected from the link.
       params.origin = document.location.href;
       params.sample = "email-links";
       console.log("triggering zapier...");
       var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
       xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mc5xgn/");
-               
+             
       xmlhttp.send(JSON.stringify(params)); //converts all parameters collected back to string and sends it to Zapier API
     });
   });
