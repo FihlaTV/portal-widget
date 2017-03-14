@@ -68,7 +68,7 @@
 
     button.setAttribute('data-caller_id', callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
 
-    if (dataText != "Thanks for your interest in ") {
+    if (dataText !== "Thanks for your interest in ") {
       document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
     }
   };
