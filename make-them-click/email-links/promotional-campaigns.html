@@ -45,18 +45,18 @@
     //check for each designated parameter to see if they exist and then populate/modify the string accordingly.
     //All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
 
-    if (params.campaign && params.campaign.toLowerCase() != "null") {
+    if (params.campaign && params.campaign.toLowerCase() !== "null") {
       callerid = params.campaign;
       dataText += "<strong>" + params.campaign + "</strong>";
     }
-    
-    if (params.name && params.name.toLowerCase() != "null") {
+
+    if (params.name && params.name.toLowerCase() !== "null") {
 
       callerid += "_" + params.name;
       dataText += ", <strong>" + params.name + "!</strong>";
     }
 
-    if (params.company && params.company.toLowerCase() != "null") {
+    if (params.company && params.company.toLowerCase() !== "null") {
 
       callerid += "_" + params.company;
       dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
@@ -87,9 +87,9 @@
       params.origin = document.location.href;
       params.sample = "email-links";
       console.log("triggering zapier...");
-      var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+      var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
       xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mc5xgn/");
-             
+
       xmlhttp.send(JSON.stringify(params)); //converts all parameters collected back to string and sends it to Zapier API
     });
   });
