@@ -51,17 +51,14 @@
     }
 
     if (params.name && params.name.toLowerCase() !== "null") {
-
       callerid += "_" + params.name;
       dataText += ", <strong>" + params.name + "!</strong>";
     }
 
     if (params.company && params.company.toLowerCase() !== "null") {
-
       callerid += "_" + params.company;
       dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
     }
-
 
     try {
      button.setAttribute('data-caller_id',callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
@@ -70,7 +67,6 @@
     }
 
     button.setAttribute('data-caller_id', callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
-
 
     if (dataText != "Thanks for your interest in ") {
       document.getElementById("data-content").innerHTML = dataText; //if we did build up the greeting string with some parameters, add it to the top of the page
