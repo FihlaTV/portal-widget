@@ -63,10 +63,9 @@
     }
 
 
-    try{
+    try {
      button.setAttribute('data-caller_id',callerid); //set the caller-id parameter in the widget code to carry the end user's information to our SIP endpoint
-    }
-    catch(err){
+    } catch(err) {
       alert("Thanks for testing! Couldn't dynamically modify the callerId. Please specify the 'id' attribute of your call button and make sure it matches the string on line #48  -Fikri from Voxbone");
     }
 
