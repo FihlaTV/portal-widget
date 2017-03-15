@@ -33,31 +33,30 @@
   }
 
   var params;
-  var dataText = "Thanks for your interest in ";
+  var dataText = "";
 
   window.onload = function() { //.onload means this part of the script will only work after the page is fully loaded, i.e. our click to call button is loaded properly.
 
     params = getJsonFromUrl(); //execute the script to get parameters from URL. `params` variable will contain new properties for each parameter.
 
     var button = document.getElementById("callButton"); //get the click-to-call button element to modify its parameters
-    var callerid = "campaign"; //the callerid string we will build to present to our SIP PBX / contact center
+    var callerid = "support_call"; //the callerid string we will build to present to our SIP PBX / contact center
 
     //check for each designated parameter to see if they exist and then populate/modify the string accordingly.
     //All existing parameters in the URL can now be accessed with the format : `params.<parameter-Name-In-URL>`
 
-    if (params.campaign && params.campaign.toLowerCase() !== "null") {
-      callerid = params.campaign;
-      dataText += "<strong>" + params.campaign + "</strong>";
+    if (params.customerName && params.customerName.toLowerCase() !== "null") {
+      callerid = params.customerName;
+      dataText += "We are working hard on fixing <strong>" + params.customerName + "</strong>'s issue";
     }
 
-    if (params.name && params.name.toLowerCase() !== "null") {
-      callerid += "_" + params.name;
-      dataText += ", <strong>" + params.name + "!</strong>";
+    if (params.ticketNumber && params.ticketNumber.toLowerCase() !== "null") {
+      callerid += "_TN" + params.ticketNumber; //you can parse this part in your SBC/SIP proxy server as the ticket number if necessary to route the call
+      dataText += "<br />If your ticket <strong>#" + params.ticketNumber + " </strong> requires urgent attention, you can call us now!";
     }
 
-    if (params.company && params.company.toLowerCase() !== "null") {
-      callerid += "_" + params.company;
-      dataText += "<br /> I'm looking forward to discussing the next steps for <strong>" + params.company + "</strong>";
+    if (params.customerId && params.customerId.toLowerCase() !== "null") {
+      callerid += "_CID" + params.customerId; //you can parse this part in your SBC/SIP proxy server as the customer id if necessary to route the call
     }
 
     try {
@@ -80,7 +79,7 @@
 
       //This particular implementation of mine triggers my Zapier integration and sends me a Slack chat message with all data collected from the link.
       params.origin = document.location.href;
-      params.sample = "email-links";
+      params.sample = "support-ticket";
       console.log("triggering zapier...");
       var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
       xmlhttp.open("POST", "https://hooks.zapier.com/hooks/catch/239979/mc5xgn/");
@@ -92,7 +91,7 @@
 </head>
 
 <body>
-  <header id="top" class="header">
+  <header id="top" class="header-support">
     <div class="text-vertical-center">
       <!-- You can present the data collected from the URL here. This is just an example -->
       <div class="company-logo">
@@ -103,20 +102,22 @@
       <div class="data-text">
         <!-- The following is empty -->
         <h2 class="data-content" id="data-content"></h2>
+        <h4 style="color:#781E75;font-weight: bold;">Your calls from this page will directly connect to the right person and will be priroitized.</h4>
       </div>
-      <div class="helper-text">
-        <!-- Hint : You can get this information also from the URL. Ex : The account manager of the customer -->
-        <a class="helper-image"><img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/7/005/0b5/0ed/2d9cc29.jpg" /></a>
-        <h1 style="font-size:36px;">Fikri Fırat</h1>
-        <h4>Developer Advocate at Voxbone Workshop</h4>
-      </div>
-      <br>
       <a>
         <!-- You must update this part with the code generated from click2vox.com or voxbone.com/portal. This is purely copied and pasted code from there. -->
-        <div class="voxButton text-vertical-center" id="callButton" data-button_id="58a72916a08a081100f361cc" data-text="Call%20Fikri%20Now%20%26%23128222%3B%20%26%23128527%3B%20%26%23127757%3B%20%26%23127758%3B" data-did="883510080686" data-caller_id="test" data-incompatible_browser_configuration="show_text_html" data-server_url="https://click2vox.com" data-use_default_button_css="true" data-div_css_class_name="style-b" data-placement="bottom-right" data-text_html="Call +32493400606"></div>
+        <div class="voxButton text-vertical-center" id="callButton" data-button_id="58a72916a08a081100f361cc" data-text="Call%20Support%20Now%20%26%23128526%3B" data-did="883510080686" data-caller_id="test" data-incompatible_browser_configuration="show_text_html" data-server_url="https://click2vox.com" data-use_default_button_css="true" data-div_css_class_name="style-b" data-placement="bottom-right" data-text_html="Call +32493400606"></div>
         <script async src="https://click2vox.com/click2vox.js"></script>
       </a>
       <br>
+      <div class="helper-text">
+        <!-- Hint : You can get this information also from the URL. Ex : The account manager of the customer -->
+        <a class="helper-image"><img src="http://icon-icons.com/icons2/534/PNG/512/technical-support-2_icon-icons.com_52811.png" /></a>
+        <h1 style="font-size:36px;">Voxbone Support Team</h1>
+        <h4>Your call is important to us</h4>
+      </div>
+      <br>
+      
       <!-- You can link the product/service or your homepage to this button. -->
       <a href="https://workshop.voxbone.com" class="btn btn-dark btn-lg">Find Out More</a>
     </div>
