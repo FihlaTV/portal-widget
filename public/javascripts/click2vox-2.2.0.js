@@ -825,7 +825,7 @@ var loadVoxboneWidget = (function() {
     e.preventDefault();
     if (!isChromeOnHttp()) {
       makeCall();
-    } else if (!isPopUp()) {
+    } else if (!isPopUp() && infoVoxbone.https_popup !== 'false') {
       openPopup();
       return false;
     }
