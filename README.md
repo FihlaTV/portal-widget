@@ -1,4 +1,5 @@
 <img src="public/images/navbar-brand.png" align="right" />
+
 # Click2Vox WebRTC Widget generator
 
 Click2Vox creates a button that allows anyone with a WebRTC enabled browser to call a SIP address you define. The widget generator makes is possible to cut and paste code that can be inserted into your own website and place the button there. 
