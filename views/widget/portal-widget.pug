@@ -115,12 +115,12 @@ block content
                             span(style="margin-left:20px" ng-show='widget.show_frame') Pick frame color #[div.glyphicon.glyphicon-tint(tabindex="0" aria-hidden='true' colorpicker colorpicker-position="right" colorpicker-with-input="true" type="text" ng-model="widget.frame_color" ng-blur="generateWidgetCode()" style="cursor: pointer" ng-style="{'color': widget.frame_color || 'black'}")]
 
                       .form-group(analytics-on analytics-event="Extra Configuration" analytics-label="Test user setup")
-                        input(id='test_setup' type='checkbox' name='test_setup' ng-model='widget.test_setup')
+                        input(id='test_setup' type='checkbox' name='test_setup' ng-model='widget.test_setup' ng-disabled='!widget.show_frame')
                         label(for='test_setup') #[span] Test user setup
                           .badge(data-toggle='tooltip' data-placement="top" title="Place a link to test the users's WebRTC setup") ?
 
                       .form-group(analytics-on analytics-event="Extra Configuration" analytics-label="Show branding")
-                        input(id='show_branding' type='checkbox' name='show_branding' ng-model='widget.show_branding')
+                        input(id='show_branding' type='checkbox' name='show_branding' ng-model='widget.show_branding' ng-disabled='!widget.show_frame')
                         label(for='show_branding') #[span] Show branding
                           .badge(data-toggle='tooltip' data-placement="top" title="Toggles Voxbone branding from button and popup") ?
 

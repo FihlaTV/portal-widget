@@ -202,6 +202,15 @@ var loadVoxboneWidget = (function() {
 
   voxButtonElement.innerHTML += voxPopup;
 
+  var show_frame = infoVoxbone.show_frame !== 'false';
+
+  if (!show_frame) {
+    infoVoxbone.div_css_class_name += ' no-frame';
+    infoVoxbone.div_css_class_name += ' no-branding';
+    infoVoxbone.test_setup = 'false';
+    infoVoxbone.show_branding = 'false';
+  }
+
   var links = '';
   var customText = '';
   //get JSON with customized texts
@@ -243,14 +252,6 @@ var loadVoxboneWidget = (function() {
       </div> \
       ';
     }
-  }
-
-
-  if (infoVoxbone.show_frame === 'false') {
-    infoVoxbone.div_css_class_name += ' no-frame';
-
-    if (infoVoxbone.show_branding === 'false')
-      infoVoxbone.div_css_class_name += ' no-branding';
   }
 
   var custom_button_color = '';
