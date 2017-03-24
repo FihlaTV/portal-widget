@@ -32,14 +32,9 @@ block content
         angular.bootstrap(document, ['voxboneApp']);
 
         require(['#{process.env.APP_URL}/click2vox.js']);
-
     });
 
-  .voxButton#voxButtonPreview(data-div_css_class_name="hidden"
-  data-voxbone_webrtc_username=`${widget.webrtc_username}`
-  data-voxbone_webrtc_password=`${widget.webrtc_password}`
-  data-basic_auth=`${widget.basic_auth == 1 ? "true" : "false" }`
-  )
+  .voxButton#voxButtonPreview(data-div_css_class_name="hidden" data-voxbone_webrtc_username=`${widget.webrtc_username}` data-voxbone_webrtc_password=`${widget.webrtc_password}` data-basic_auth=`${widget.basic_auth == 1 ? "true" : "false" }`)
 
   .main.createButton(ng-controller="EditWidgetController" ng-init=`initData={widget: ${JSON.stringify(widget)}, did: ${widget.did}, widgetCode: '', username: '${widget.webrtc_username}'}`)
     .header
@@ -56,7 +51,7 @@ block content
                 p #[b Note:] web service needs to be installed to keep your password secret.  Install #[a(href="https://github.com/voxbone/webrtc-auth-servlet") webrtc-auth-servlet] or #[a(href="https://github.com/voxbone/webrtc-auth-perl") webrtc-auth-perl].
                   |&nbsp;&nbsp;Alternatively enable basic authentication on this did in the customer portal and then return to this page to have a widget with your api key directly embedded into the generated html.
 
-            #alert-success.alert.alert-warning.ng-cloak(ng-show="!isWebRTCSupported") #[i.glyphicon.glyphicon-exclamation-sign] You are using a browser that does not support WebRTC. You can configure and preview your buttons, but you will not be able to place test calls. Please use Chrome or Firefox for maximum functionality.
+            #alert-success.alert.alert-warning.ng-cloak(ng-hide="isWebRTCSupported") #[i.glyphicon.glyphicon-exclamation-sign] You are using a browser that does not support WebRTC. You can configure and preview your buttons, but you will not be able to place test calls. Please use Chrome or Firefox for maximum functionality.
             #alert-success.alert.alert-success(style="display: none;")
 
     .container
@@ -69,7 +64,7 @@ block content
                 .boxPanel.options-group
                   .form-group(analytics-on analytics-event="Button Configuration" analytics-label="Button Label")
                     label Button Label
-                    input.form-control(type="text" name="button_label" ng-blur="generateWidgetCode()" ng-model="widget.button_label" value=`${defaultBtnLabel}` placeholder=`i.e. ${defaultBtnLabel}`)
+                    input.form-control(type="text" name="button_label" ng-blur="generateWidgetCode()" ng-model="widget.button_label" placeholder=`i.e. ${widget.button_label}`)
 
                   if params.basic_auth == '0'
                     .form-group(analytics-on analytics-event="Button Configuration" analytics-label="Server Auth Url")
@@ -93,13 +88,13 @@ block content
                   .form-group
                     label Button Style
                     .button-text
-                      button.btn-style-a(analytics-on analytics-event="Button Style" analytics-label="Blue Theme" ng-cloak ng-click="setTheme('style-a')") #[span {{ widget.button_label || '#{defaultBtnLabel}' }}]
+                      button.btn-style-a(analytics-on analytics-event="Button Style" analytics-label="Blue Theme" ng-cloak ng-click="setTheme('style-a')") #[span {{ widget.button_label }}]
                       div(ng-cloak) Blue Theme
                     .button-text
-                      button.btn-style-b(analytics-on analytics-event="Button Style" analytics-label="Purple Theme" ng-cloak ng-click="setTheme('style-b')") #[span {{ widget.button_label || '#{defaultBtnLabel}' }}]
+                      button.btn-style-b(analytics-on analytics-event="Button Style" analytics-label="Purple Theme" ng-cloak ng-click="setTheme('style-b')") #[span {{ widget.button_label }}]
                       div(ng-cloak) Purple Theme
                     .button-text
-                      button.btn-style-c(analytics-on analytics-event="Button Style" analytics-label="Custom Theme" ng-cloak ng-click="setCustomTheme()" colorpicker colorpicker-position="right" colorpicker-with-input="true" type="text" ng-model="widget.button_color" ng-blur="generateWidgetCode()" ng-style="{'background': widget.button_color ? widget.button_color : tempButtonColor }") #[span {{ widget.button_label || '#{defaultBtnLabel}' }}]
+                      button.btn-style-c(analytics-on analytics-event="Button Style" analytics-label="Custom Theme" ng-cloak ng-click="setCustomTheme()" colorpicker colorpicker-position="right" colorpicker-with-input="true" type="text" ng-model="widget.button_color" ng-blur="generateWidgetCode()" ng-style="{'background': widget.button_color ? widget.button_color : tempButtonColor }") #[span {{ widget.button_label }}]
                       div(ng-cloak) Custom Theme
 
                   .panel-heading

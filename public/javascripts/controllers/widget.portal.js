@@ -1,13 +1,13 @@
 define([
-    'controllers/widget.mixin',
-    'jquery',
-    'clipboard',
-    'bootstrap'
-  ], function (WidgetMixin, $, Clipboard) {
+  'controllers/widget.mixin',
+  'jquery',
+  'clipboard',
+  'bootstrap'
+], function(WidgetMixin, $, Clipboard) {
 
-  var WidgetEditController = function ($scope, $http, $window, $controller, $cookies, $analytics, ngToast) {
+  var WidgetEditController = function($scope, $http, $window, $controller, $cookies, $analytics, ngToast) {
     // let's extend from the mixin first of all
-    angular.extend(this, $controller(WidgetMixin, {$scope: $scope}));
+    angular.extend(this, $controller(WidgetMixin, { $scope: $scope }));
 
     $scope.preview_webrtc_compatible = true;
     $scope.previewButton = true;
@@ -29,11 +29,11 @@ define([
       shouldProvision: false
     };
 
-    $scope.prepareHtmlForCodepen = function (data) {
+    $scope.prepareHtmlForCodepen = function(data) {
       return data.replace(/"/g, "'");
     };
 
-    $scope.reset = function (form) {
+    $scope.reset = function(form) {
       if (form) {
         form.$setPristine();
         form.$setUntouched();
@@ -42,13 +42,13 @@ define([
       $scope.widget = angular.copy($scope.master);
     };
 
-    $scope.init = function () {
+    $scope.init = function() {
       $scope.wirePluginAndEvents();
     };
 
-    $scope.loadWidgetData = function () {
+    $scope.loadWidgetData = function() {
       var data = $scope.initData;
-      var savedWidget = $cookies.getObject($scope.initData.username+'_widget');
+      var savedWidget = $cookies.getObject($scope.initData.username + '_widget');
 
       $scope.widget = angular.extend({}, $scope.widget, $scope.master, data.widget, savedWidget);
       $scope.widgetCode = data.widgetCode;
@@ -73,27 +73,27 @@ define([
     // watch for initial widget data
     $scope.$watch('initData', $scope.loadWidgetData);
 
-    $scope.showCallButton = function () {
+    $scope.showCallButton = function() {
       var ibc_value = $scope.widget.incompatible_browser_configuration;
       return $scope.preview_webrtc_compatible || (ibc_value === 'link_button_to_a_page');
     };
 
-    $scope.getHiddenButtonText = function () {
+    $scope.getHiddenButtonText = function() {
       switch ($scope.widget.incompatible_browser_configuration) {
-      case 'hide_widget':
-        return "";
-      case 'show_text_html':
-        return $scope.widget.show_text_html_value;
+        case 'hide_widget':
+          return "";
+        case 'show_text_html':
+          return $scope.widget.show_text_html_value;
       }
     };
 
     $scope.reset();
     $scope.init();
 
-    $scope.setTheme = function (theme) {
-      if($scope.widget.frame_color)
+    $scope.setTheme = function(theme) {
+      if ($scope.widget.frame_color)
         $scope.tempFrameColor = $scope.widget.frame_color;
-      if($scope.widget.button_color)
+      if ($scope.widget.button_color)
         $scope.tempButtonColor = $scope.widget.button_color;
 
       $scope.widget.frame_color = "";
@@ -104,15 +104,15 @@ define([
 
     $scope.setCustomTheme = function() {
       $scope.widget.frame_color = "black";
-      if($scope.tempFrameColor)
+      if ($scope.tempFrameColor)
         $scope.widget.frame_color = $scope.tempFrameColor;
       $scope.widget.button_color = $scope.tempButtonColor;
     };
 
-    $scope.generateWidgetCode = function () {
+    $scope.generateWidgetCode = function() {
       console.log("--> Generating Output Code...");
       if ($scope.widget.basic_auth !== '1' && !($scope.validAuthUri || false)) {
-        $scope.openNotice("error","Please specify a valid Auth URL before generating code");
+        $scope.openNotice("error", "Please specify a valid Auth URL before generating code");
         $scope.widgetCode = 'Please specify a valid Auth URL before generating code';
         return;
       }
@@ -145,30 +145,30 @@ define([
         .then(function successCallback(response) {
             $scope.widgetCode = response.data.widget_code;
             $scope.widget_form.$setPristine();
-            $scope.openNotice("success" ,"Code Generated Successfully!");
+            $scope.openNotice("success", "Code Generated Successfully!");
           },
           function errorCallback(response) {
             var data = response.data;
             console.log("Error: ", data);
-            $scope.openNotice("error" ,"Error generating widget code snippet. Please check it.");
+            $scope.openNotice("error", "Error generating widget code snippet. Please check it.");
             $scope.widgetCode = 'Error generating widget code snippet. Please check it.';
           });
     };
 
-    $scope.$watch('widget', function (newValue, oldValue) {
+    $scope.$watch('widget', function(newValue, oldValue) {
       //Don't generate widget when we are moving inside the colorpicker
-      if(newValue.button_color !== oldValue.button_color || newValue.frame_color !== oldValue.frame_color)
+      if (newValue.button_color !== oldValue.button_color || newValue.frame_color !== oldValue.frame_color)
         return;
 
       //Don't generate widget when the user is typing the button label
-      if(newValue.button_label !== oldValue.button_label)
+      if (newValue.button_label !== oldValue.button_label)
         return;
 
       $scope.generateWidgetCode();
       saveCookie();
     }, true);
 
-    $scope.validateAuthUri = function (form) {
+    $scope.validateAuthUri = function(form) {
       voxrtc_config = undefined;
       var authUrl = form.server_auth_url.$viewValue;
       $scope.resetUriFlags();
@@ -177,7 +177,7 @@ define([
         url: authUrl,
         jsonp: "callback",
         dataType: "jsonp"
-      }).always(function () {
+      }).always(function() {
         if (typeof voxrtc_config !== "undefined") {
           console.log("Valid Auth Service Detected");
           $scope.validAuthUri = true;
@@ -190,15 +190,15 @@ define([
       });
     };
 
-    $scope.resetUriFlags = function () {
+    $scope.resetUriFlags = function() {
       $scope.validAuthUri = false;
       $scope.invalidAuthUri = false;
     };
     //Function to Open notifications
-    $scope.openNotice = function (type, text) {
+    $scope.openNotice = function(type, text) {
       ngToast.create({
-        className:type,
-        content: '<div>'+ text +"</div>"
+        className: type,
+        content: '<div>' + text + "</div>"
       });
     };
 
@@ -211,10 +211,11 @@ define([
       delete cookieWidget.webrtc_username;
       delete cookieWidget.shouldProvision;
       delete cookieWidget.sip_uri;
-      $cookies.putObject($scope.initData.username+'_widget', cookieWidget);
+      $cookies.putObject($scope.initData.username + '_widget', cookieWidget);
     }
   };
 
   WidgetEditController.$inject = ['$scope', '$http', '$window', '$controller', '$cookies', '$analytics', 'ngToast'];
+
   return WidgetEditController;
 });

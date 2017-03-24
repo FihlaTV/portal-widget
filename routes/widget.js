@@ -52,15 +52,16 @@ var portalHandler = function(req, res, next) {
     placement: 'bottom-right',
     webrtc_username: params.login,
     webrtc_password: params.password,
-    basic_auth: params.basic_auth
+    basic_auth: params.basic_auth,
+    button_label: params.button_label || utils.defaultBtnLabel
   };
+
   var result = {
     widget: fakeWidget,
     params: params,
     hideIframeTab: true
   };
 
-  result.defaultBtnLabel = utils.defaultBtnLabel;
   result.widget_code = utils.widgetDivHtmlCode(fakeWidget, params.e164);
   result.title = title;
   res.render('widget/portal-widget', result);
