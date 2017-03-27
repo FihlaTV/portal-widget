@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "postinstall": "bower cache clean && bower install"
+    "postinstall": "bower cache clean && bower install",
+    "test": "grunt simplemocha && grunt jshint"
   },
   "engines": {
-    "node": "6.9.5"
+    "node": "^6.10.0"
   },
   "dependencies": {
     "async": "^1.5.0",
@@ -54,7 +55,9 @@
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-nightwatch": "^0.5.3",
+    "grunt-simple-mocha": "^0.4.1",
     "jit-grunt": "^0.10.0",
+    "mocha": "^3.0.2",
     "nightwatch": "^0.9.5"
   }
 }

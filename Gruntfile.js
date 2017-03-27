@@ -74,6 +74,11 @@ module.exports = function (grunt) {
         }
       },
     },
+    simplemocha: {
+      all: {
+        src: ['tests/unit/**/*.js']
+      }
+    },
     jshint: {
       files: [
           '*.js',
@@ -100,6 +105,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-nightwatch');
+  grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.registerTask('default', ['concurrent:devel']);
