@@ -44,6 +44,7 @@ var portalHandler = function(req, res, next) {
     did: params.e164,
     sip_uri: 'echo@ivrs', // this is just a placeholder. we should remove it
     rating: true,
+    https_popup: true,
     dial_pad: true,
     show_frame: true,
     show_branding: true,

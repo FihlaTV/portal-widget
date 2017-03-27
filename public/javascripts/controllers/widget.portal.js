@@ -21,6 +21,7 @@ define([
     $scope.master = {
       showWidgetCode: true,
       dial_pad: true,
+      https_popup: true,
       button_style: 'style-a',
       frame_color: '',
       background_style: 'dark',
