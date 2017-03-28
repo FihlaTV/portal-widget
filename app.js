@@ -43,7 +43,7 @@ var widgetRoutes = require('./routes/widget').router;
 app.use('/', routes);
 app.use('/click2vox/', routes);
 app.use('/click2vox/', widgetRoutes);
-app.use('/widget/', widgetRoutes);
+app.use('/click2vox/widget/', widgetRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
