@@ -72,7 +72,6 @@ var loadAssets = (function() {
   voxButtonElement = voxButtonElements[0];
   infoVoxbone = voxButtonElement.dataset;
   loadCss(infoVoxbone.server_url + '/stylesheets/vxb-widget.css');
-  renderWidget();
 
   //Bind click event to rendered buttons
   handleEvent('click', '.vxb-widget-box #launch_call', function (e) {
@@ -196,7 +195,6 @@ var renderWidget = (function(){
   var oldWrapper = document.getElementsByClassName("vox-widget-wrapper")[0];
   if (oldWrapper)
     oldWrapper.parentNode.removeChild(oldWrapper);
-
 
   // Don't load anything if we're not going to show anything
   if (!isWebRTCSupported() && (!infoVoxbone.incompatible_browser_configuration || infoVoxbone.incompatible_browser_configuration === 'hide_widget')) {
@@ -325,7 +323,6 @@ var renderWidget = (function(){
         </div> \
       </div> \
     </div> \
-    <div class="vox-widget-draggable" style="position: fixed; width: 100%; bottom: 0; top: 0; left: 0; z-index: -1"></div>\
   ';
 
   voxButtonElement.insertAdjacentHTML('beforeend', voxPopup);
@@ -334,7 +331,7 @@ var renderWidget = (function(){
   // Start of Widget Events
   //
   // Click on Send Rating button event
-  handleEvent('click', '.vox-widget-wrapper #send-rating', function (e) {
+  handleEvent('click', '.vox-widget-wrapper #send-rating', function(e) {
     e.preventDefault();
 
     var rate = document.querySelector('.vox-widget-wrapper input[name=vxb-rate]:checked');
@@ -343,7 +340,7 @@ var renderWidget = (function(){
     var comment = document.querySelector('.vox-widget-wrapper #rating-message');
     var commentValue = comment ? comment.value : "";
 
-    var data =  { rate: rate.value, comment: commentValue, url: document.URL, token: infoVoxbone.button_id };
+    var data = { rate: rate.value, comment: commentValue, url: document.URL, token: infoVoxbone.button_id };
     var message = { action: 'rate', data: data };
 
     sendRate(message.data);
@@ -359,7 +356,7 @@ var renderWidget = (function(){
   // Click Rating star buttons event
   var starRatingButtons = document.querySelectorAll(".vox-widget-wrapper input[name=vxb-rate]");
   Array.prototype.forEach.call(starRatingButtons, function(el, i) {
-    el.addEventListener('click', function (e) {
+    el.addEventListener('click', function(e) {
       var element = document.querySelector(".vox-widget-wrapper #send-rating");
       element.classList.add('vxb-btn-style');
       element.classList.remove('vxb-btn-style-disabled');
@@ -369,14 +366,14 @@ var renderWidget = (function(){
   // Click on Pad buttons event
   var padButtons = document.querySelectorAll(".vox-widget-wrapper .vw-dialpad li");
   Array.prototype.forEach.call(padButtons, function(el, i) {
-    el.addEventListener('click', function (e) {
+    el.addEventListener('click', function(e) {
       e.preventDefault();
       callAction(this.textContent);
     });
   });
 
   // Get dialpad values from keyboard
-  document.body.addEventListener('keydown', function(event){
+  document.body.addEventListener('keydown', function(event) {
 
     // Avoid capturing keys if the focus is in an element which captures keys
     if (['input', 'select'].indexOf(event.target.nodeName.toLowerCase()) > -1)
@@ -398,7 +395,7 @@ var renderWidget = (function(){
     callAction(event.key);
   });
 
-  document.body.addEventListener('keyup', function(event){
+  document.body.addEventListener('keyup', function(event) {
     if (!event.key.match(/[0-9\*#]/)) return;
 
     var el = document.getElementsByClassName(`vw-dialpadkey-${event.key}`)[0];
@@ -407,27 +404,27 @@ var renderWidget = (function(){
   });
 
   // End call button event
-  handleEvent('click', '.vox-widget-wrapper .vw-end-call', function (e) {
+  handleEvent('click', '.vox-widget-wrapper .vw-end-call', function(e) {
     e.preventDefault();
     resetWidget(voxButtonElement);
     callAction('hang_up');
   });
 
   // Close Widget button event
-  handleEvent('click', '.vox-widget-wrapper #close-screen i', function (e) {
+  handleEvent('click', '.vox-widget-wrapper #close-screen i', function(e) {
     e.preventDefault();
     hideElement(".vox-widget-wrapper");
 
     callAction('hang_up');
 
     // send "no rating"
-    var data =  { rate: 0, comment: 'Closed Without Rating', url: document.URL };
+    var data = { rate: 0, comment: 'Closed Without Rating', url: document.URL };
     var message = { action: 'rate', data: data };
     callAction(message);
   });
 
   // Open Widget button event
-  handleEvent('click', '.vox-widget-wrapper #full-screen i', function (e) {
+  handleEvent('click', '.vox-widget-wrapper #full-screen i', function(e) {
     e.preventDefault();
 
     var widget_body_selector = ".vox-widget-wrapper #vw-body";
@@ -445,43 +442,49 @@ var renderWidget = (function(){
   });
 
   // Pad button event
-  handleEvent('click', '.vox-widget-wrapper i.vx-icon-pad', function (e) {
+  handleEvent('click', '.vox-widget-wrapper i.vx-icon-pad', function(e) {
     e.preventDefault();
     var element = document.querySelector(".vox-widget-wrapper .vw-dialpad");
     element.classList.toggle('active');
   });
 
   // Mic button event
-  handleEvent('click', '.vox-widget-wrapper .vxb-widget-mic', function (e) {
+  handleEvent('click', '.vox-widget-wrapper .vxb-widget-mic', function(e) {
     e.preventDefault();
 
     callAction('microphone_mute');
   });
 
-  requirejs(['draggabilly'],
-    function(Draggabilly) {
+  if (!isPopUp() && infoVoxbone.draggable === 'true') {
+    requirejs(['draggabilly'],
+      function(Draggabilly) {
+        draggableWidget(Draggabilly);
+      }
+    );
+  }
+
+  var draggableWidget = function(Draggabilly) {
     //Just let the whole widget drag when tapping on Title Bar
-      var draggable = new Draggabilly('.vox-widget-wrapper .vw-main', {
-        handle: '.vw-title-bar',
-        containment: '.vox-widget-draggable'
-      });
-      var draggableFixed = false;
+    var draggable = new Draggabilly('.vox-widget-wrapper .vw-main', {
+      handle: '.vw-title-bar',
+      containment: 'html'
+    });
+    var draggableFixed = false;
 
-      draggable.on('dragEnd', function() {
+    draggable.on('dragEnd', function() {
       //modifying the widget position to fixed for containing it inside the screen when expanded
-        if (!document.querySelector('.vox-widget-wrapper[class*="vw-top"]') && !draggableFixed) {
-          var screen_h = window.innerHeight;
-          var widget = document.querySelector(".vox-widget-wrapper .vw-main");
-          var measures = widget.getBoundingClientRect();
-          widget.style.position = "fixed";
-          var measures_after = widget.getBoundingClientRect();
-          widget.style.transform = 'translate3D(' + (measures.left-measures_after.left) + 'px, ' + (screen_h-measures.height) + 'px, 0)';
-          draggableFixed = true;
-        }
+      if (!document.querySelector('.vox-widget-wrapper[class*="vw-top"]') && !draggableFixed) {
+        var screen_h = window.innerHeight;
+        var widget = document.querySelector(".vox-widget-wrapper .vw-main");
+        var measures = widget.getBoundingClientRect();
+        widget.style.position = "fixed";
+        var measures_after = widget.getBoundingClientRect();
+        widget.style.transform = 'translate3D(' + (measures.left - measures_after.left) + 'px, ' + (screen_h - measures.height) + 'px, 0)';
+        draggableFixed = true;
+      }
 
-      });
-    }
-  );
+    });
+  };
   //
   // End of Widget Events
 });
@@ -811,7 +814,7 @@ function makeCall() {
     return;
   }
 
-  if (isWebRTCSupported()) {
+  if (isWebRTCSupported() && !isChromeOnHttp()) {
     renderWidget();
     resetWidget();
 
