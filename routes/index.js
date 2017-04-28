@@ -32,7 +32,7 @@ router.get('/.well-known/acme-challenge/:acmeToken', function(req, res, next) {
 
 // This is indented to get the latest version always
 router.get(utils.click2voxJsFileName, function(req, res) {
-  res.redirect(process.env.APP_URL + '/javascripts/click2vox-2.2.0.js');
+  res.redirect(process.env.APP_URL + '/javascripts/click2vox-2.3.0.js');
 });
 
 // FAQ & Known issues documents
