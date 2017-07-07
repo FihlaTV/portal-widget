@@ -28,7 +28,7 @@ module.exports = function (grunt) {
     },
     nodemon: {
       options: {
-        nodeArgs: ['--debug'],
+        nodeArgs: ['--inspect'],
       },
       dev: {
         script: './bin/www'
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
           'public/config.js',
           'public/javascripts/controllers/*.js',
           'public/javascripts/directives/*.js',
-          'public/javascripts/click2vox-2.3.0.js',
+          'public/javascripts/click2vox-2.4.0.js',
           'routes/**/*.js',
           'tests/**/*.js',
           'views/**/*.js'
