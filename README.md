@@ -1,8 +1,8 @@
-<img src="public/images/navbar-brand.png" align="right" />
+<img src="public/images/voxbone-brand.png" align="right" />
 
 # Click2Vox WebRTC Widget generator
 
-Click2Vox creates a button that allows anyone with a WebRTC enabled browser to call a SIP address you define. The widget generator makes is possible to cut and paste code that can be inserted into your own website and place the button there. 
+Click2Vox creates a button that allows anyone with a WebRTC enabled browser to call a SIP address you define. The widget generator makes is possible to cut and paste code that can be inserted into your own website and place the button there.
 This portal is intended to host your own widget generator, so your customers/employees can create their own click-to-call buttons that connect to your service.
 
 ## Usage
@@ -46,7 +46,7 @@ launch the node application:
 
 By default the application will listen to port 3000
 
-## Running Tests 
+## Running Tests
 
 * NightWatch (http://nightwatchjs.org/)
 
