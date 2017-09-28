@@ -30,9 +30,14 @@ router.get('/.well-known/acme-challenge/:acmeToken', function(req, res, next) {
   else res.status(404).send();
 });
 
-// This is indented to get the latest version always
+// This is indented to get the old JSSIP version
 router.get(utils.click2voxJsFileName, function(req, res) {
-  res.redirect(process.env.APP_URL + '/javascripts/click2vox-2.4.0.js');
+  res.redirect(process.env.CLICK2VOX_SDK_URL);
+});
+
+// This is indented to get the latest version always
+router.get(utils.click2voxJsLatestFileName, function(req, res) {
+  res.redirect(process.env.LATEST_CLICK2VOX_SDK_URL);
 });
 
 // FAQ & Known issues documents
