@@ -12,7 +12,7 @@ var requirejs,require,define;!function(global,setTimeout){function commentReplac
 /* jshint ignore:end */
 var requirejs, require, define, infoVoxbone;
 (function(click2vox) {
-  var voxButtonElement, voxButtonElements, audioContext, predefinedHtmlButton;
+  var voxButtonElement, voxButtonElements, audioContext, predefinedHtmlButton, click2vox_ready;
   var button_id = document.currentScript.dataset.button_id;
   var customText = '';
 
@@ -77,18 +77,31 @@ var requirejs, require, define, infoVoxbone;
   if (predefinedHtmlButton === false) {
     extend(click2vox, {
       makeCall: function(displayWidget) {
-        if (displayWidget === false) {
-          voxbone.WebRTC.call(infoVoxbone.did);
+        var startCall = function () {
+          if (!displayWidget) {
+            voxbone.WebRTC.call(infoVoxbone.did);
+          } else {
+            makeCall();
+          }
+        };
+        if (click2vox_ready) {
+          startCall();
         } else {
-          makeCall();
+
+          document.addEventListener("click2vox-ready", function() {
+            startCall();
+          }, false);
         }
       },
+
       onCall: function() {
         return voxbone.WebRTC.onCall;
       },
+
       hangUp: function() {
         voxbone.WebRTC.hangup();
       },
+
       destroyWidget: function() {
         try {
           var parent = voxButtonElement.querySelector('.vox-widget-wrapper');
@@ -731,6 +744,7 @@ var requirejs, require, define, infoVoxbone;
         }
       });
 
+      click2vox_ready = true;
       // Dispatch/Trigger the event on top of the document
       document.dispatchEvent(event);
     }
