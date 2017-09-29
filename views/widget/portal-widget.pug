@@ -31,7 +31,7 @@ block content
 
         angular.bootstrap(document, ['voxboneApp']);
 
-        require(['#{process.env.click2voxJsLatestFileName}']);
+        require(['#{process.env.LATEST_CLICK2VOX_SDK_URL}']);
     });
 
   .voxButton#voxButtonPreview(data-div_css_class_name="hidden" data-voxbone_webrtc_username=`${widget.webrtc_username}` data-voxbone_webrtc_password=`${widget.webrtc_password}` data-basic_auth=`${widget.basic_auth == 1 ? "true" : "false" }`)

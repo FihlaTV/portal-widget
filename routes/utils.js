@@ -69,7 +69,7 @@ module.exports = {
 
   widgetSecureDivHTML: function(widget, did) {
     var pug = require('pug');
-    var script = process.env.APP_URL + this.click2voxJsLatestFileName;
+    var script = process.env.LATEST_CLICK2VOX_SDK_URL;
 
     var params = {
       did: did,
