@@ -11,6 +11,8 @@ module.exports = {
   // Keep the starting slash
   click2voxJsFileName: "/click2vox.js",
 
+  click2voxJsLatestFileName: "/beta/click2vox.js",
+
   defaultBtnLabel: process.env.DEFAULT_BUTTON_LABEL || 'Call Now',
 
   userGravatarUrl: function(res) {
@@ -39,7 +41,7 @@ module.exports = {
 
   widgetDivHtmlCode: function(widget, did) {
     var pug = require('pug');
-    var script = process.env.APP_URL + this.click2voxJsFileName;
+    var script = process.env.LATEST_CLICK2VOX_SDK_URL || 'https://cdn.voxbone.com/click2vox/click2vox-3.min.js';
     var label = widget.button_label || process.env.DEFAULT_BUTTON_LABEL;
 
     var params = {
@@ -67,7 +69,7 @@ module.exports = {
 
   widgetSecureDivHTML: function(widget, did) {
     var pug = require('pug');
-    var script = process.env.APP_URL + this.click2voxJsFileName;
+    var script = process.env.LATEST_CLICK2VOX_SDK_URL;
 
     var params = {
       did: did,
