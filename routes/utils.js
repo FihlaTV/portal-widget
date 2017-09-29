@@ -41,7 +41,7 @@ module.exports = {
 
   widgetDivHtmlCode: function(widget, did) {
     var pug = require('pug');
-    var script = process.env.APP_URL + this.click2voxJsFileName;
+    var script = process.env.APP_URL + this.click2voxJsLatestFileName;
     var label = widget.button_label || process.env.DEFAULT_BUTTON_LABEL;
 
     var params = {
@@ -69,7 +69,7 @@ module.exports = {
 
   widgetSecureDivHTML: function(widget, did) {
     var pug = require('pug');
-    var script = process.env.APP_URL + this.click2voxJsFileName;
+    var script = process.env.APP_URL + this.click2voxJsLatestFileName;
 
     var params = {
       did: did,
