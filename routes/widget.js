@@ -22,22 +22,18 @@ var PERMITTED_FIELDS = [
   'placement', 'https_popup'
 ];
 
-var portalHandler = function(req, res, next) {
+var portalHandler = function (req, res, next) {
   var params = req.parameters.all();
   var required = ['e164', 'login', 'password', 'basic_auth'];
 
-  if (Object.keys(params).length === 0 && req.session.params)
-    params = req.session.params;
-  else
-    req.session.params = params;
+  if (Object.keys(params).length === 0 && req.session.params) { params = req.session.params; } else { req.session.params = params; }
 
   // check if required params are present
-  var reqCheck = _.filter(required, function(n) {
+  var reqCheck = _.filter(required, function (n) {
     return params[n] !== undefined;
   });
 
-  if (reqCheck.length < 4)
-    return utils.objectNotFound(res, req, next);
+  if (reqCheck.length < 4) { return utils.objectNotFound(res, req, next); }
 
   var fakeWidget = {
     id: utils.uuid4(),
@@ -71,7 +67,7 @@ var portalHandler = function(req, res, next) {
 router.get('/', portalHandler);
 router.post('/', portalHandler);
 
-router.post('/portal-widget/get-code', function(req, res, next) {
+router.post('/portal-widget/get-code', function (req, res, next) {
   var result = {};
   var params = req.parameters;
 
@@ -80,8 +76,10 @@ router.post('/portal-widget/get-code', function(req, res, next) {
   });
 
   var widgetData = params
-    .merge({updated_at: new Date()})
-    .permit(PERMITTED_FIELDS);
+    .permit(PERMITTED_FIELDS)
+    .value();
+
+  widgetData.updated_at = new Date();
 
   try {
     result.widget_code = utils.widgetDivHtmlCode(widgetData, widgetData.did);
@@ -92,8 +90,8 @@ router.post('/portal-widget/get-code', function(req, res, next) {
     });
   }
 });
-//This endpoint is used to host a page for Customers who do not use a HTTPS site.
-router.all('/portal-widget/get-html', function(req, res, next){
+// This endpoint is used to host a page for Customers who do not use a HTTPS site.
+router.all('/portal-widget/get-html', function (req, res, next) {
   var result = {};
   var widget = req.parameters;
   try {
