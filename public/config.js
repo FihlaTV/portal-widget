@@ -10,63 +10,56 @@ require.config({
       exports: 'angular'
     },
     'angular-cookies': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'ngCookies';
       }
     },
     'angular-recaptcha': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'vcRecaptcha';
       }
     },
     'angular-sanitize': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'ngSanitize';
       }
     },
     'angular-toast': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'ngToast';
       }
     },
     'angular-bootstrap-colorpicker': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'colorpicker.module';
       }
     },
     'angulartics': {
-      deps: ['angular'],
-      init: function () {
+      deps: ['angular'], init: function () {
         return 'angulartics';
       }
     },
     'angulartics-google-analytics': {
-      deps: ['angulartics'],
-      init: function () {
+      deps: ['angulartics'], init: function () {
         return 'angulartics.google.analytics';
       }
-    }
+    },
   },
   paths: {
     angular: [
-      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min',
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min',
       '/lib/angular/angular.min'
     ],
     'angular-cookies': [
-      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-cookies.min',
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.min',
       '/lib/angular-cookies/angular-cookies.min'
     ],
     'angular-recaptcha': [
-      '//cdnjs.cloudflare.com/ajax/libs/angular-recaptcha/3.0.4/angular-recaptcha.min',
+      '//cdnjs.cloudflare.com/ajax/libs/angular-recaptcha/3.0.3/angular-recaptcha.min',
       '/lib/angular-recaptcha/release/angular-recaptcha.min'
     ],
     'angular-sanitize': [
-      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-sanitize.min',
+      '//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.min',
       '/lib/angular-sanitize/angular-sanitize.min'
     ],
     'angular-toast': [
@@ -90,7 +83,7 @@ require.config({
       '/lib/bootstrap/dist/js/bootstrap.min'
     ],
     clipboard: [
-      '//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min',
+      '//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.15/clipboard.min',
       '/lib/clipboard/dist/clipboard.min'
     ],
     jquery: [
@@ -102,7 +95,7 @@ require.config({
       '/lib/qtip2/basic/jquery.qtip.min'
     ],
     raty: [
-      '//cdnjs.cloudflare.com/ajax/libs/raty/2.8.0/jquery.raty.min',
+      '//cdnjs.cloudflare.com/ajax/libs/raty/2.7.0/jquery.raty.min',
       '/lib/raty/lib/jquery.raty'
     ],
     widget: '/javascripts/widget',
@@ -111,13 +104,13 @@ require.config({
       '/lib/domReady/domReady'
     ],
     requirejs: [
-      '//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min',
+      '//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min',
       '/lib/requirejs/require'
     ]
   },
   packages: [
-    'controllers',
-    'directives'
+    "controllers",
+    "directives"
   ]
 });
 
